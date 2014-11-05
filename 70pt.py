@@ -11,7 +11,7 @@ from Tkinter import *
 root = Tk()
 # Create our drawpad and oval
 drawpad = Canvas(root, width=480,height=320, background='white')
-targetx1 = 200
+targetx1 = 20
 targety1 = 20
 targetx2 = 280
 targety2 = 80
@@ -30,10 +30,23 @@ class MyApp:
 		
 		self.button1 = Button(self.myContainer1)
 		self.button1.configure(text="Up", background= "green")
-		self.button1.grid(row=0,column=0)
+		self.button1.grid(row=0,column=1)
+		self.button2 = Button(self.myContainer1)
+		self.button2.configure(text="Down", background= "green")
+		self.button2.grid(row=1,column=1)
+		self.button3 = Button(self.myContainer1)
+		self.button3.configure(text="Left", background= "green")
+		self.button3.grid(row=1,column=0)
+		self.button4 = Button(self.myContainer1)
+		self.button4.configure(text="Right", background= "green")
+		self.button4.grid(row=1,column=3)
 					
 		# "Bind" an action to the first button												
 		self.button1.bind("<Button-1>", self.button1Click)
+		self.button2.bind("<Button-1>", self.button2Click)
+		self.button3.bind("<Button-1>", self.button3Click)
+		self.button4.bind("<Button-1>", self.button4Click)
+		
 
 		  
 		# This creates the drawpad - no need to change this 
@@ -47,13 +60,42 @@ class MyApp:
 		global drawpad
                 x1,y1,x2,y2 = drawpad.coords(player)
 		global targetx1, targety1, targetx2, targety2
-
+		drawpad.move(player, 0,-20)
+		self.gameWin()
+	def button2Click(self, event):   
+                # "global" makes sure that we can access our oval and our drawpad
+		global oval
+		global drawpad
+                x1,y1,x2,y2 = drawpad.coords(player)
+		global targetx1, targety1, targetx2, targety2
+		drawpad.move(player,0,20)
+	def button3Click(self, event):   
+                # "global" makes sure that we can access our oval and our drawpad
+		global oval
+		global drawpad
+                x1,y1,x2,y2 = drawpad.coords(player)
+		global targetx1, targety1, targetx2, targety2
+		drawpad.move(player, -20,0)
+	def button4Click(self, event):   
+                # "global" makes sure that we can access our oval and our drawpad
+		global oval
+		global drawpad
+                x1,y1,x2,y2 = drawpad.coords(player)
+		global targetx1, targety1, targetx2, targety2
+                drawpad.move(player, 20,0)
 
 		# Ensure that we are doing our collision detection
 		# After we move our object!
-	
-	
-		
+	def gameWin(self,):
+            global target
+            global player
+            global drawpad
+            global targetx1, targety1, targetx2, targety2
+            x1,y1,x2,y2 = drawpad.coords(player)
+            if (targetx1 < x1 and targetx2 > x2) and (targety1 < y1 and targety2 > y2):
+                drawpad.itemconfig(target, fill="red")
+
+
 myapp = MyApp(root)
 
 root.mainloop()
